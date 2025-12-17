@@ -12,9 +12,10 @@ new_user = {
     "phoneNumber": "32132"
 }
 
-response_create_user = httpx.post(url='http://localhost:8003/api/v1/users',
-                                  json=new_user)
+client = httpx.Client(base_url='http://localhost:8003/api/v1/')
 
+response_create_user = client.post(url='users',
+                                   json=new_user)
 response_create_user_data = response_create_user.json()
 user_id = response_create_user_data['user']['id']
 
@@ -22,9 +23,8 @@ request_open_credit_card_data = {
     'userId': user_id
 }
 
-response_open_credit_card = httpx.post('http://localhost:8003/api/v1/accounts/open-credit-card-account',
-                                       json=request_open_credit_card_data,
-                                       timeout=10)
+response_open_credit_card = client.post('accounts/open-credit-card-account',
+                                        json=request_open_credit_card_data)
 
 response_open_credit_card_data = response_open_credit_card.json()
 credit_card_account_id = response_open_credit_card_data['account']['id']
@@ -38,16 +38,12 @@ new_purchase_operation = {
     "accountId": credit_card_account_id
 }
 
-response_make_purchase_operation = httpx.post('http://localhost:8003/api/v1/operations/make-purchase-operation',
-                                              json=new_purchase_operation,
-                                              timeout=10)
+response_make_purchase_operation = client.post('operations/make-purchase-operation',
+                                               json=new_purchase_operation)
 response_make_purchase_operation_data = response_make_purchase_operation.json()
 purchase_operation_id = response_make_purchase_operation_data['operation']['id']
 
-
-response_operation_receipt = httpx.get(
-    f'http://localhost:8003/api/v1/operations/operation-receipt/{purchase_operation_id}',
-    timeout=10)
+response_operation_receipt = client.get(f'operations/operation-receipt/{purchase_operation_id}')
 
 pretty_json_response_operation_receipt = json.dumps(response_operation_receipt.json(), indent=4)
 print("Response operation receipt: ", pretty_json_response_operation_receipt)
