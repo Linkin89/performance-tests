@@ -2,6 +2,10 @@ import json
 from time import time
 import httpx
 
+from clients.http.client import HTTPClient
+from clients.http.gateway.cards.client import CardsGatewayHTTPClient
+from clients.http.gateway.users.client import UsersGatewayHTTPClient
+
 
 name = f"vadim{time()}"
 new_user = {
@@ -12,9 +16,9 @@ new_user = {
     "phoneNumber": "32132"
 }
 
-client = httpx.Client(base_url='http://localhost:8003/api/v1/')
+client = httpx.Client(base_url='http://localhost:8003')
 
-response_create_user = client.post(url='users',
+response_create_user = client.post(url='/api/v1/users',
                                    json=new_user)
 response_create_user_data = response_create_user.json()
 user_id = response_create_user_data['user']['id']
@@ -22,8 +26,8 @@ user_id = response_create_user_data['user']['id']
 request_open_credit_card_data = {
     'userId': user_id
 }
-
-response_open_credit_card = client.post('accounts/open-credit-card-account',
+print(type(request_open_credit_card_data))
+response_open_credit_card = client.post('/api/v1/accounts/open-credit-card-account',
                                         json=request_open_credit_card_data)
 
 response_open_credit_card_data = response_open_credit_card.json()
@@ -38,12 +42,12 @@ new_purchase_operation = {
     "accountId": credit_card_account_id
 }
 
-response_make_purchase_operation = client.post('operations/make-purchase-operation',
+response_make_purchase_operation = client.post('/api/v1/operations/make-purchase-operation',
                                                json=new_purchase_operation)
 response_make_purchase_operation_data = response_make_purchase_operation.json()
 purchase_operation_id = response_make_purchase_operation_data['operation']['id']
 
-response_operation_receipt = client.get(f'operations/operation-receipt/{purchase_operation_id}')
+response_operation_receipt = client.get(f'/api/v1/operations/operation-receipt/{purchase_operation_id}')
 
 pretty_json_response_operation_receipt = json.dumps(response_operation_receipt.json(), indent=4)
 print("Response operation receipt: ", pretty_json_response_operation_receipt)
