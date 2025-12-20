@@ -4,11 +4,13 @@ from clients.http.client import HTTPClient
 
 
 class IssueVirtualCardDict(TypedDict):
+    """Структура данных для создания виртуальной карты"""
     userId: str
     accountId: str
 
 
 class IssuePhysicalCardDict(TypedDict):
+    """Структура данных для создания физической карты"""
     userId: str
     accountId: str
 
