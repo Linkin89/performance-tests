@@ -2,6 +2,9 @@ import json
 from time import time
 import httpx
 
+from clients.http.gateway.cards.client import CardsGatewayHTTPClient
+from clients.http.gateway.users.client import UsersGatewayHTTPClient
+
 
 name = f"vadim{time()}"
 new_user = {
@@ -22,7 +25,7 @@ user_id = response_create_user_data['user']['id']
 request_open_credit_card_data = {
     'userId': user_id
 }
-print(type(request_open_credit_card_data))
+
 response_open_credit_card = client.post('/api/v1/accounts/open-credit-card-account',
                                         json=request_open_credit_card_data)
 
