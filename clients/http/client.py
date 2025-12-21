@@ -9,7 +9,7 @@ class HTTPClient:
     """
 
     def __init__(self, client: Client):
-        self.client = client
+        self._client = client
 
     def get(self, url: URL | str, params: QueryParams | None = None) -> Response:
         """
@@ -19,7 +19,7 @@ class HTTPClient:
         :param params: GET-параметры запроса (например, ?key=value).
         :return: Объект Response с данными ответа.
         """
-        return self.client.get(url=url, params=params)
+        return self._client.get(url=url, params=params)
 
     def post(self, url: URL | str, json: Any | None = None) -> Response:
         """
@@ -29,4 +29,4 @@ class HTTPClient:
         :param json: Данные в формате json.
         :return: Объект Response с данными ответа.
         """
-        return self.client.post(url=url, json=json)
+        return self._client.post(url=url, json=json)
