@@ -1,6 +1,6 @@
 from typing import Literal, TypedDict
 
-from httpx import Response
+from httpx import QueryParams, Response
 from clients.http.client import HTTPClient
 
 
@@ -79,7 +79,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param operation_id: id операции
         :returns Response: объект httpx.Response
         """
-        return self.client.get(url=f'/api/v1/operations/{operation_id}')
+        return self.get(url=f'/api/v1/operations/{operation_id}')
 
     def get_operation_receipt_api(self, operation_id: GetOperationReceiptPathDict) -> Response:
         """
@@ -88,7 +88,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param operation_id: id операции
         :returns Response: объект httpx.Response
         """
-        return self.client.get(url=f'/api/v1/operations/operation-receipt/{operation_id}')
+        return self.get(url=f'/api/v1/operations/operation-receipt/{operation_id}')
 
     def get_operations_api(self, query: GetOperationsQueryDict) -> Response:
         """
@@ -97,7 +97,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param accountId: id аккаунта
         :returns Response: объект httpx.Response
         """
-        return self.client.get(url='/api/v1/operations/operations/', query=query)
+        return self.get(url='/api/v1/operations/operations/', params=query(QueryParams(**query)))
 
     def get_opertions_summary_api(self, query: GetOperationsSummaryQueryDict) -> Response:
         """
@@ -106,7 +106,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param accountId: id аккаунта
         :returns Response: объект httpx.Response
         """
-        return self.client.get(url='/api/v1/operations/operations-summary', query=query)
+        return self.get(url='/api/v1/operations/operations-summary', params=query(QueryParams(**query)))
 
     def make_fee_operation_api(self, body: MakeFeeOperationBodyDict) -> Response:
         """
@@ -115,7 +115,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param body: данные для создания операции комиссии
         :returns Request: объект httpx.Response
         """
-        return self.client.post(url='/api/v1/operations/make-fee-operation', json=body)
+        return self.post(url='/api/v1/operations/make-fee-operation', json=body)
 
     def make_top_up_operation_api(self, body: MakeTopUpOperationBodyDict) -> Response:
         """
@@ -123,7 +123,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param body: данные для создания операции пополнения
         :returns Request: объект httpx.Response
         """
-        return self.client.post(url='/api/v1/operations/make-top-up-operation', json=body)
+        return self.post(url='/api/v1/operations/make-top-up-operation', json=body)
 
     def make_cashback_operation_api(self, body: MakeCashbackOperationBodyDict) -> Response:
         """
@@ -132,7 +132,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param body: данные для создания операции кэшбэка
         :returns Request: объект httpx.Response
         """
-        return self.client.post(url='/api/v1/operations/make-cashback-operation', json=body)
+        return self.post(url='/api/v1/operations/make-cashback-operation', json=body)
 
     def make_transfer_operation_api(self, body: MakeTransferOperationBodyDict) -> Response:
         """
@@ -141,7 +141,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param body: данные для создания операции перевода
         :returns Request: объект httpx.Response
         """
-        return self.client.post(url='/api/v1/operations/make-transfer-operation', json=body)
+        return self.post(url='/api/v1/operations/make-transfer-operation', json=body)
 
     def make_purchase_operation_api(self, body: MakePurchaseOperationBodyDict) -> Response:
         """
@@ -150,7 +150,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param body: данные для создания операции покупки
         :returns Request: объект httpx.Response
         """
-        return self.client.post(url='/api/v1/operations/make-purchase-operation', json=body)
+        return self.post(url='/api/v1/operations/make-purchase-operation', json=body)
 
     def make_bill_payment_operation_api(self, body: MakeBillPaymentOperationBodyDict) -> Response:
         """
@@ -159,7 +159,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param body: данные для создания операции оплаты по счёту
         :returns Request: объект httpx.Response
         """
-        return self.client.post(url='/api/v1/operations/make-bill-payment-operation', json=body)
+        return self.post(url='/api/v1/operations/make-bill-payment-operation', json=body)
 
     def make_cash_withdrawal_operation_api(self, body: MakeCashWithdrawalOpertionBodyDict) -> Response:
         """
@@ -168,4 +168,4 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param body: данные для создания операции оплаты по счёту
         :returns Request: объект httpx.Response
         """
-        return self.client.post(url='/api/v1/operations/make-cash-withdrawal-operation', json=body)
+        return self.post(url='/api/v1/operations/make-cash-withdrawal-operation', json=body)
