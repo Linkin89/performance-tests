@@ -3,9 +3,10 @@ from typing import TypedDict
 from httpx import Response
 
 from clients.http.client import HTTPClient
+from clients.http.gateway.client import build_gateway_http_client
 
 
-class CreateUserRequestDict(TypedDict):
+class CreateUserBodyDict(TypedDict):
     """
     Структура данных для создания нового пользователя.
     """
@@ -30,11 +31,15 @@ class UsersGatewayHTTPClient(HTTPClient):
         """
         return self.get(f"/api/v1/users/{user_id}")
 
-    def create_user_api(self, request: CreateUserRequestDict) -> Response:
+    def create_user_api(self, body: CreateUserBodyDict) -> Response:
         """
         Создание нового пользователя.
 
         :param request: Словарь с данными нового пользователя.
         :return: Ответ от сервера (объект httpx.Response).
         """
-        return self.post("/api/v1/users", json=request)
+        return self.post("/api/v1/users", json=body)
+
+
+def build_users_http_gateway_client() -> UsersGatewayHTTPClient:
+    return UsersGatewayHTTPClient(client=build_gateway_http_client())
