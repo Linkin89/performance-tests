@@ -2,9 +2,6 @@ import json
 from time import time
 import httpx
 
-from clients.http.gateway.cards.client import CardsGatewayHTTPClient
-from clients.http.gateway.users.client import UsersGatewayHTTPClient
-
 
 name = f"vadim{time()}"
 new_user = {

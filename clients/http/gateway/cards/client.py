@@ -26,7 +26,7 @@ class CardsGatewayHTTPClient(HTTPClient):
         :param json: json содержащий userId и accountId
         :return: Ответ от сервера (объект httpx.Response).
         """
-        return self.client.post(url='/api/v1/cards/issue-virtual-card', json=json)
+        return self.post(url='/api/v1/cards/issue-virtual-card', json=json)
 
     def issue_physical_card_api(self, json: IssuePhysicalCardDict) -> Response:
         """
@@ -35,4 +35,4 @@ class CardsGatewayHTTPClient(HTTPClient):
         :param json: json содержащий userId и accountId
         :return: Ответ от сервера (объект httpx.Response).
         """
-        return self.client.post(url='/api/v1/cards/issue-physical-card', json=json)
+        return self.post(url='/api/v1/cards/issue-physical-card', json=json)
