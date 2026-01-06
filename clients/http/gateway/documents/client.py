@@ -1,19 +1,8 @@
-from typing import TypedDict
 from httpx import Response
 
 from clients.http.client import HTTPClient
 from clients.http.gateway.client import build_gateway_http_client
 
-
-class DocumentDict(TypedDict):
-    """Описание структуры документа"""
-    url: str
-    document: str
-
-
-class GetTariffDocumentResponseDict(DocumentDict):
-    """Структура данных полученного """
-    tariff: DocumentDict
 
 class DocumentsGatewayHTTPClient(HTTPClient):
     """
@@ -37,13 +26,6 @@ class DocumentsGatewayHTTPClient(HTTPClient):
         :return: Ответ от сервера (объект httpx.Response).
         """
         return self.get(f"/api/v1/documents/contract-document/{account_id}")
-
-    def get_tariff_document(self):
-        pass
-
-    def get_contract_document(self):
-        pass
-
 
 
 def build_documents_gateway_http_client() -> DocumentsGatewayHTTPClient:
