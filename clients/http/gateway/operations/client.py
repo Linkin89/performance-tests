@@ -32,37 +32,37 @@ class GetOperationsSummaryQueryDict(TypedDict):
     accountId: str
 
 
-class MakeFeeOperationResponseDict(BaseOperationResponseDict):
+class MakeFeeOperationRequestDict(MakeOperationRequestDict):
     """Структура данных для создания операции комиссии."""
     ...
 
 
-class MakeTopUpOperationResponseDict(BaseOperationResponseDict):
+class MakeTopUpOperationRequestDict(MakeOperationRequestDict):
     """Структура данных для создания операции пополнения."""
     ...
 
 
-class MakeCashbackOperationResponseDict(BaseOperationResponseDict):
+class MakeCashbackOperationRequestDict(MakeOperationRequestDict):
     """Структура данных для создания операции кэшбэка."""
     ...
 
 
-class MakeTransferOperationResponseDict(BaseOperationResponseDict):
+class MakeTransferOperationRequestDict(MakeOperationRequestDict):
     """Структура данных для создания операции перевода."""
     ...
 
 
-class MakePurchaseOperationResponseDict(BaseOperationResponseDict):
+class MakePurchaseOperationRequestDict(MakeOperationRequestDict):
     """Структура данных для создания операции покупки."""
     category: str
 
 
-class MakeBillPaymentOperationResponseDict(BaseOperationResponseDict):
+class MakeBillPaymentOperationRequestDict(MakeOperationRequestDict):
     """Структура данных для создания операции оплаты по счету."""
     ...
 
 
-class MakeCashWithdrawalOpertionResponseDict(BaseOperationResponseDict):
+class MakeCashWithdrawalOpertionRequestDict(MakeOperationRequestDict):
     """Структура данных для создания операции снятия наличных денег."""
     ...
 
@@ -108,7 +108,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         return self.get(url='/api/v1/operations/operations-summary', params=query(QueryParams(**query)))
 
-    def make_fee_operation_api(self, body: MakeFeeOperationResponseDict) -> Response:
+    def make_fee_operation_api(self, body: MakeFeeOperationRequestDict) -> Response:
         """
         Создание операции комиссии.
 
@@ -117,7 +117,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         return self.post(url='/api/v1/operations/make-fee-operation', json=body)
 
-    def make_top_up_operation_api(self, body: MakeTopUpOperationResponseDict) -> Response:
+    def make_top_up_operation_api(self, body: MakeTopUpOperationRequestDict) -> Response:
         """
         Создание операции пополнения.
         :param body: данные для создания операции пополнения
@@ -125,7 +125,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         return self.post(url='/api/v1/operations/make-top-up-operation', json=body)
 
-    def make_cashback_operation_api(self, body: MakeCashbackOperationResponseDict) -> Response:
+    def make_cashback_operation_api(self, body: MakeCashbackOperationRequestDict) -> Response:
         """
         Создание операции кэшбэка.
 
@@ -134,7 +134,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         return self.post(url='/api/v1/operations/make-cashback-operation', json=body)
 
-    def make_transfer_operation_api(self, body: MakeTransferOperationResponseDict) -> Response:
+    def make_transfer_operation_api(self, body: MakeTransferOperationRequestDict) -> Response:
         """
         Создание операции перевода.
 
@@ -143,7 +143,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         return self.post(url='/api/v1/operations/make-transfer-operation', json=body)
 
-    def make_purchase_operation_api(self, body: MakePurchaseOperationResponseDict) -> Response:
+    def make_purchase_operation_api(self, body: MakePurchaseOperationRequestDict) -> Response:
         """
         Создание операции покупки.
 
@@ -152,7 +152,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         return self.post(url='/api/v1/operations/make-purchase-operation', json=body)
 
-    def make_bill_payment_operation_api(self, body: MakeBillPaymentOperationResponseDict) -> Response:
+    def make_bill_payment_operation_api(self, body: MakeBillPaymentOperationRequestDict) -> Response:
         """
         Создание операции оплаты по счету.
 
@@ -161,7 +161,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         return self.post(url='/api/v1/operations/make-bill-payment-operation', json=body)
 
-    def make_cash_withdrawal_operation_api(self, body: MakeCashWithdrawalOpertionResponseDict) -> Response:
+    def make_cash_withdrawal_operation_api(self, body: MakeCashWithdrawalOpertionRequestDict) -> Response:
         """
         Создание операции снятия наличных денег.
 
