@@ -1,15 +1,94 @@
+from datetime import datetime
 from typing import Literal, TypedDict
 
 from httpx import QueryParams, Response
 from clients.http.client import HTTPClient
+from clients.http.gateway.client import build_gateway_http_client
 
 
-class BaseOperationResponseDict(TypedDict):
+class OperationDict(TypedDict):
+    """Структура данных по операции"""
+    id: str
+    type: Literal["FEE", "TOP_UP", "PURCHASE", "CASHBACK", "TRANSFER", "BILL_PAYMENT", "CASH_WITHDRAWAL"]
+    status: Literal["FAILED", "COMPLETED", "IN_PROGRESS", "UNSPECIFIED"]
+    amount: float
+    cardId: str
+    category: str
+    createdAt: datetime
+    accountId: str
+
+
+class OperationReceiptDict(TypedDict):
+    """Структура данных чека"""
+    url: str
+    document: str
+
+
+class OperationsSummaryDict(TypedDict):
+    """Структура данных общей сводки по операциям"""
+    spentAmount: float
+    receivedAmount: float
+    cashbackAmount: float
+
+
+class MakeFeeOperationResponseDict(TypedDict):
+    """Структура данных ответа создания операции списания комиссии"""
+    operation: OperationDict
+
+
+class MakeTopUpOperationResponseDict(TypedDict):
+    """Структура данных ответа создания операции пополнения"""
+    operation: OperationDict
+
+
+class MakeCashbackOperationResponseDict(TypedDict):
+    """Структура данных ответа создания операции кэшбэка"""
+    operation: OperationDict
+
+
+class MakeTransferOperationResponseDict(TypedDict):
+    """Структура данных ответа создания операции перевода"""
+    operation: OperationDict
+
+
+class MakePurchaseOperationResponseDict(TypedDict):
+    """Структура данных ответа создания операции покупки"""
+    operation: OperationDict
+
+
+class MakeBillPaymentOperationResponseDict(TypedDict):
+    """Структура данных ответа создания операции оплаты по счёту"""
+    operation: OperationDict
+
+
+class MakeCashWithdrawalOperationResponseDict(TypedDict):
+    """Структура данных ответа создания операции обналичивания"""
+    operation: OperationDict
+
+
+class GetOperationReceiptResponseDict(TypedDict):
+    """Структура данных ответа получения чека"""
+    receipt: OperationReceiptDict
+
+
+class MakeOperationRequestDict(TypedDict):
     """Базовая структура данных для создания операций."""
     status: Literal['FAILED', 'COMPLETED', 'IN_PROGRESS', 'UNSPECIFIED']
-    amount: int
+    amount: float
     cardId: str
     accountId: str
+
+
+class GetOperationsSummaryResponseDict(TypedDict):
+    summary: OperationsSummaryDict
+
+
+class GetOperationResponseDict(TypedDict):
+    operation: OperationDict
+
+
+class GetOperationsResponseDict(TypedDict):
+    operations: list[OperationDict]
 
 
 class GetOperationIdPathDict(TypedDict):
@@ -169,3 +248,89 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :returns Request: объект httpx.Response
         """
         return self.post(url='/api/v1/operations/make-cash-withdrawal-operation', json=body)
+
+    def get_operation(self, operation_id: str) -> GetOperationResponseDict:
+        path = GetOperationIdPathDict(operation_id=operation_id)
+        response = self.get_operation_api(path)
+        return response.json()
+
+    def get_operation_receipt(self, operation_id: str) -> GetOperationReceiptResponseDict:
+        path = GetOperationReceiptPathDict(operation_id=operation_id)
+        response = self.get_operation_receipt_api(path)
+        return response.json()
+
+    def get_operations(self, account_id: str) -> GetOperationsResponseDict:
+        query = GetOperationsQueryDict(accountId=account_id)
+        response = self.get_operations_api(query)
+        return response.json()
+
+    def get_operations_summary(self, account_id) -> GetOperationsSummaryResponseDict:
+        query = GetOperationsQueryDict(account_id)
+        response = self.get_opertions_summary_api(query)
+        return response.json()
+
+    def make_fee_operation(self, card_id: str, account_id: str) -> MakeFeeOperationResponseDict:
+        body = MakeFeeOperationRequestDict(status="COMPLETED",
+                                           amount=55.77,
+                                           cardId=card_id,
+                                           accountId=account_id)
+        response = self.make_fee_operation_api(body=body)
+        return response.json()
+
+    def make_top_up_operation(self, card_id: str, account_id: str) -> MakeTopUpOperationResponseDict:
+        body = MakeTopUpOperationRequestDict(status="FAILED",
+                                             amount=12.32,
+                                             cardId=card_id,
+                                             accountId=account_id)
+        response = self.make_top_up_operation_api(body=body)
+        return response.json()
+
+    def make_cashback_operation(self, card_id: str, account_id: str) -> MakeCashbackOperationResponseDict:
+        body = MakeCashbackOperationRequestDict(status="IN_PROGRESS",
+                                                amount=4.5,
+                                                cardId=card_id,
+                                                accountId=account_id)
+        response = self.make_cashback_operation_api(body=body)
+        return response.json()
+
+    def make_transfer_operation(self,
+                                card_id: str,
+                                account_id: str) -> MakeTransferOperationResponseDict:
+        body = MakeTransferOperationRequestDict(status="UNSPECIFIED",
+                                                amount=234.0,
+                                                cardId=card_id,
+                                                accountId=account_id)
+        response = self.make_cashback_operation_api(body=body)
+        return response.json()
+
+    def make_purchase_operation(self, card_id: str,
+                                account_id: str, category: str) -> MakePurchaseOperationResponseDict:
+        body = MakePurchaseOperationRequestDict(status="COMPLETED",
+                                                amount=342.32,
+                                                cardId=card_id,
+                                                accountId=account_id,
+                                                category=category)
+        response = self.make_purchase_operation_api(body=body)
+        return response.json()
+
+    def make_bill_payment_operation(self, card_id: str, account_id: str) -> MakeBillPaymentOperationResponseDict:
+        body = MakeBillPaymentOperationRequestDict(status="COMPLETED",
+                                                   amount=2.3,
+                                                   cardId=card_id,
+                                                   accountId=account_id)
+        response = self.make_bill_payment_operation_api(body=body)
+        return response.json()
+
+    def make_cash_withdrawal_operation(self,
+                                       card_id: str,
+                                       account_id: str) -> MakeCashWithdrawalOperationResponseDict:
+        body = MakeCashWithdrawalOpertionRequestDict(status="FAILED",
+                                                     amount=34234.45,
+                                                     cardId=card_id,
+                                                     accountId=account_id)
+        response = self.make_bill_payment_operation_api(body=body)
+        return response.json()
+
+
+def build_operations_gateway_http_client() -> OperationsGatewayHTTPClient:
+    return OperationsGatewayHTTPClient(build_gateway_http_client())
