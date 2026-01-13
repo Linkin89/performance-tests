@@ -15,7 +15,7 @@ user_id = response_create_user.user.id
 response_open_credit_card_account = account_gateway_client.open_credit_card_account(user_id)
 print('Open credit card account response: ', response_open_credit_card_account)
 
-account_id = response_open_credit_card_account['account']['id']
+account_id = response_open_credit_card_account.account.id
 response_get_tariff_document = documents_gateway_client.get_tariff_document(account_id)
 print('Get tariff document response: ', response_get_tariff_document)
 
