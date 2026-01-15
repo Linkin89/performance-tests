@@ -20,6 +20,7 @@ class OperationStatus(StrEnum):
     FAILED = "FAILED"
     COMPLETED = "COMPLETED"
     IN_PROGRESS = "IN_PROGRESS"
+    UNSPECIFIED = "UNSPECIFIED"
 
     def __repr__(self) -> str:
         return self.value
@@ -114,16 +115,6 @@ class GetOperationResponseSchema(BaseModel):
 
 class GetOperationsResponseSchema(BaseModel):
     operations: list[OperationSchema]
-
-
-class GetOperationIdPathSchema(BaseModel):
-    """Структура данных для получения информацци об операции."""
-    operation_id: str
-
-
-class GetOperationReceiptPathSchema(BaseModel):
-    """Структура данных для получения чека по операции."""
-    operation_id: str
 
 
 class GetOperationsQuerySchema(BaseModel):

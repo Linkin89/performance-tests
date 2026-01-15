@@ -1,9 +1,8 @@
 from httpx import QueryParams, Response
+from pydantic import UUID4
 from clients.http.client import HTTPClient
 from clients.http.gateway.client import build_gateway_http_client
 from clients.http.gateway.operations.schema import (
-    GetOperationIdPathSchema,
-    GetOperationReceiptPathSchema,
     GetOperationReceiptResponseSchema,
     GetOperationResponseSchema,
     GetOperationsQuerySchema,
@@ -33,7 +32,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
     Клиент для взаимодействия c /api/v1/operations сервиса http-gateway.
     """
 
-    def get_operation_api(self, operation_id: GetOperationIdPathSchema) -> Response:
+    def get_operation_api(self, operation_id: UUID4) -> Response:
         """
         Получение информации об операции по `operation_id`.
 
@@ -42,7 +41,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         return self.get(url=f'/api/v1/operations/{operation_id}')
 
-    def get_operation_receipt_api(self, operation_id: GetOperationReceiptPathSchema) -> Response:
+    def get_operation_receipt_api(self, operation_id: UUID4) -> Response:
         """
         Получение чека по операции по `operation_id`.
 
@@ -133,14 +132,12 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         return self.post(url='/api/v1/operations/make-cash-withdrawal-operation', json=json.model_dump(by_alias=True))
 
-    def get_operation(self, operation_id: str) -> GetOperationResponseSchema:
-        path = GetOperationIdPathSchema(operation_id=operation_id)
-        response = self.get_operation_api(path)
+    def get_operation(self, operation_id: UUID4) -> GetOperationResponseSchema:
+        response = self.get_operation_api(operation_id)
         return GetOperationResponseSchema.model_validate_json(response.text)
 
-    def get_operation_receipt(self, operation_id: str) -> GetOperationReceiptResponseSchema:
-        path = GetOperationReceiptPathSchema(operation_id=operation_id)
-        response = self.get_operation_receipt_api(path)
+    def get_operation_receipt(self, operation_id: UUID4) -> GetOperationReceiptResponseSchema:
+        response = self.get_operation_receipt_api(operation_id)
         return GetOperationReceiptResponseSchema.model_validate_json(response.text)
 
     def get_operations(self, account_id: str) -> GetOperationsResponseSchema:
