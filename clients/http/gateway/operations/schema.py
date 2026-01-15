@@ -2,8 +2,6 @@ from datetime import datetime
 from enum import StrEnum
 from pydantic import BaseModel, Field, ConfigDict, UUID4, HttpUrl
 
-from tools.fakers import fake
-
 
 class OperationType(StrEnum):
     FEE = "FEE"
@@ -101,8 +99,8 @@ class MakeOperationRequestSchema(BaseModel):
     """Базовая структура данных для создания операций."""
     model_config = ConfigDict(populate_by_name=True)
 
-    status: OperationStatus = Field(default_factory=lambda: fake.enum(OperationStatus))
-    amount: float = Field(default_factory=fake.amount)
+    status: OperationStatus
+    amount: float
     card_id: str = Field(serialization_alias="cardId")
     account_id: str = Field(serialization_alias="accountId")
 
@@ -155,7 +153,7 @@ class MakeTransferOperationRequestSchema(MakeOperationRequestSchema):
 
 class MakePurchaseOperationRequestSchema(MakeOperationRequestSchema):
     """Структура данных для создания операции покупки."""
-    category: str = Field(default_factory=fake.category)
+    category: str
 
 
 class MakeBillPaymentOperationRequestSchema(MakeOperationRequestSchema):
