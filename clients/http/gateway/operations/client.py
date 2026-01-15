@@ -22,8 +22,7 @@ from clients.http.gateway.operations.schema import (
     MakeTopUpOperationRequestSchema,
     MakeTopUpOperationResponseSchema,
     MakeTransferOperationRequestSchema,
-    MakeTransferOperationResponseSchema,
-    OperationStatus
+    MakeTransferOperationResponseSchema
 )
 
 
@@ -151,64 +150,42 @@ class OperationsGatewayHTTPClient(HTTPClient):
         return GetOperationsSummaryResponseSchema.model_validate_json(response.text)
 
     def make_fee_operation(self, card_id: str, account_id: str) -> MakeFeeOperationResponseSchema:
-        json = MakeFeeOperationRequestSchema(status=OperationStatus.COMPLETED,
-                                             amount=55.77,
-                                             card_id=card_id,
-                                             account_id=account_id)
+        json = MakeFeeOperationRequestSchema(card_id=card_id, account_id=account_id)
         response = self.make_fee_operation_api(json=json)
         return MakeFeeOperationResponseSchema.model_validate_json(response.text)
 
     def make_top_up_operation(self, card_id: str, account_id: str) -> MakeTopUpOperationResponseSchema:
-        json = MakeTopUpOperationRequestSchema(status=OperationStatus.FAILED,
-                                               amount=12.32,
-                                               card_id=card_id,
-                                               account_id=account_id)
+        json = MakeTopUpOperationRequestSchema(card_id=card_id, account_id=account_id)
         response = self.make_top_up_operation_api(json=json)
         return MakeTopUpOperationResponseSchema.model_validate_json(response.text)
 
     def make_cashback_operation(self, card_id: str, account_id: str) -> MakeCashbackOperationResponseSchema:
-        json = MakeCashbackOperationRequestSchema(status=OperationStatus.IN_PROGRESS,
-                                                  amount=4.5,
-                                                  card_id=card_id,
-                                                  account_id=account_id)
+        json = MakeCashbackOperationRequestSchema(card_id=card_id, account_id=account_id)
         response = self.make_cashback_operation_api(json=json)
         return MakeCashbackOperationResponseSchema.model_validate_json(response.text)
 
     def make_transfer_operation(self,
                                 card_id: str,
                                 account_id: str) -> MakeTransferOperationResponseSchema:
-        json = MakeTransferOperationRequestSchema(status=OperationStatus.COMPLETED,
-                                                  amount=234.0,
-                                                  card_id=card_id,
-                                                  account_id=account_id)
+        json = MakeTransferOperationRequestSchema(card_id=card_id, account_id=account_id)
         response = self.make_transfer_operation_api(json=json)
         return response.json()
 
     def make_purchase_operation(self, card_id: str,
                                 account_id: str, category: str) -> MakePurchaseOperationResponseSchema:
-        json = MakePurchaseOperationRequestSchema(status=OperationStatus.COMPLETED,
-                                                  amount=342.32,
-                                                  card_id=card_id,
-                                                  account_id=account_id,
-                                                  category=category)
+        json = MakePurchaseOperationRequestSchema(card_id=card_id, account_id=account_id)
         response = self.make_purchase_operation_api(json=json)
         return MakePurchaseOperationResponseSchema.model_validate_json(response.text)
 
     def make_bill_payment_operation(self, card_id: str, account_id: str) -> MakeBillPaymentOperationResponseSchema:
-        json = MakeBillPaymentOperationRequestSchema(status=OperationStatus.COMPLETED,
-                                                     amount=2.3,
-                                                     card_id=card_id,
-                                                     account_id=account_id)
+        json = MakeBillPaymentOperationRequestSchema(card_id=card_id, account_id=account_id)
         response = self.make_bill_payment_operation_api(json=json)
         return MakeBillPaymentOperationResponseSchema.model_validate_json(response.text)
 
     def make_cash_withdrawal_operation(self,
                                        card_id: str,
                                        account_id: str) -> MakeCashWithdrawalOperationResponseSchema:
-        json = MakeCashWithdrawalOpertionRequestSchema(status=OperationStatus.FAILED,
-                                                       amount=34234.45,
-                                                       card_id=card_id,
-                                                       account_id=account_id)
+        json = MakeCashWithdrawalOpertionRequestSchema(card_id=card_id, account_id=account_id)
         response = self.make_cash_withdrawal_operation_api(json=json)
         return MakeCashWithdrawalOperationResponseSchema.model_validate_json(response.text)
 
