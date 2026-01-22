@@ -6,7 +6,7 @@ from contracts.services.gateway.cards.rpc_issue_physical_card_pb2 import (IssueP
                                                                           IssuePhysicalCardResponse)
 from contracts.services.gateway.cards.rpc_issue_virtual_card_pb2 import (IssueVirtualCardRequest,
                                                                          IssueVirtualCardResponse)
-from contracts.services.gateway.cards.cards_gateway_service_pb2_grpc import CardsGatewayServiceStub
+from contracts.services.gateway.cards.cards_gateway_service_pb2_grpc import AccountsGatewayServiceStub
 
 
 class CardsGatewayGRPCClient(GRPCClient):
@@ -23,7 +23,7 @@ class CardsGatewayGRPCClient(GRPCClient):
         """
         super().__init__(channel)
 
-        self.stub = CardsGatewayServiceStub(channel)
+        self.stub = AccountsGatewayServiceStub(channel)
 
     def issue_virtual_card_api(self, request: IssueVirtualCardRequest) -> IssueVirtualCardResponse:
         """

@@ -2,20 +2,19 @@ import grpc
 
 from contracts.services.gateway.cards.rpc_issue_physical_card_pb2 import IssuePhysicalCardRequest, IssuePhysicalCardResponse
 from contracts.services.gateway.users.rpc_create_user_pb2 import CreateUserRequest, CreateUserResponse
-from contracts.services.gateway.users.rpc_get_user_pb2 import GetUserRequest, GetUserResponse
 from contracts.services.gateway.users.users_gateway_service_pb2_grpc import UsersGatewayServiceStub
 
 from contracts.services.gateway.accounts.rpc_open_credit_card_account_pb2 import (OpenCreditCardAccountRequest,
                                                                                   OpenCreditCardAccountResponse)
 from contracts.services.gateway.accounts.accounts_gateway_service_pb2_grpc import AccountsGatewayServiceStub
-from contracts.services.gateway.cards.cards_gateway_service_pb2_grpc import CardsGatewayServiceStub
+from contracts.services.gateway.cards.cards_gateway_service_pb2_grpc import AccountsGatewayServiceStub
 
 from tools.fakers import fake  # Используем генератор фейковых данных, созданный ранее
 
 channel = grpc.insecure_channel("localhost:9003")
 
 users_gateway_service = UsersGatewayServiceStub(channel)
-cards_gateway_service = CardsGatewayServiceStub(channel)
+cards_gateway_service = AccountsGatewayServiceStub(channel)
 accounts_gateway_service = AccountsGatewayServiceStub(channel)
 
 create_user_request = CreateUserRequest(
