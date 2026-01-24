@@ -1,7 +1,7 @@
-from enum import StrEnum
 from faker import Faker
 import time
 from faker.providers.python import TEnum
+from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 
 
 class Fake:
@@ -113,6 +113,15 @@ class Fake:
         :rtype: float
         """
         return self.float(1, 100)
+
+    def proto_enum(self, value: EnumTypeWrapper) -> int:
+        """
+        Выбирает случайное значение из proto enum-типа.
+
+        :param value: Proto enum-класс для генерации значения.
+        :return: Случайное значение из перечисления.
+        """
+        return self.faker.random_element(value.values())
 
 
 fake = Fake(faker=Faker())
