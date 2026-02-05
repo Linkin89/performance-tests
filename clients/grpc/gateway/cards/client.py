@@ -1,4 +1,4 @@
-from grpc import Channel\
+from grpc import Channel
 from locust.env import Environment
 
 from clients.grpc.client import GRPCClient
